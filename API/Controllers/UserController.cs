@@ -1,13 +1,13 @@
 ﻿using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]  //api/user
-public class UserController : ControllerBase
+[Authorize]
+public class UserController : BaseApiController
 {
     private readonly DataContext _context;
 
@@ -16,6 +16,7 @@ public class UserController : ControllerBase
         _context = context;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public ActionResult<IEnumerable<AppUser>> GetUsers()
     {
@@ -24,6 +25,7 @@ public class UserController : ControllerBase
         return users;
     }
 
+  
     [HttpGet("{id}")] // api/users/2
     public ActionResult<AppUser> GetUser(int id)
     {
